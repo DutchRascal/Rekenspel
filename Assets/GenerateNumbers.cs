@@ -17,8 +17,9 @@ public class GenerateNumbers : MonoBehaviour
 
     InputField input;
     string answer;
-    int wrongScore;
-    int correctScore;
+    int wrongScore, correctScore;
+    float desiredNumber, initialNumber, currentNumber;
+    float animationTime = 1.5f;
 
     private void Awake()
     {
@@ -34,6 +35,25 @@ public class GenerateNumbers : MonoBehaviour
         thumbDown.enabled = false;
         GenerateNewNumbers();
         sign.text = "+";
+    }
+
+    private void Update()
+    {
+        if (currentNumber != desiredNumber)
+        {
+            if (initialNumber < desiredNumber)
+            {
+                currentNumber += (animationTime * Time.deltaTime) * (desiredNumber - initialNumber);
+                if (currentNumber >= desiredNumber)
+                    currentNumber = desiredNumber;
+            }
+            else
+            {
+                currentNumber -= (animationTime * Time.deltaTime) * (initialNumber - desiredNumber);
+                if (currentNumber <= desiredNumber)
+                    currentNumber = desiredNumber;
+            }
+        }
     }
 
     public void GenerateNewNumbers()
@@ -104,6 +124,18 @@ public class GenerateNumbers : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         GenerateNewNumbers();
+    }
+
+    void SetNumber(float value)
+    {
+        initialNumber = currentNumber;
+        desiredNumber = value;
+    }
+
+    void AddToNumber(float value)
+    {
+        initialNumber = currentNumber;
+        desiredNumber += value;
     }
 }
 
