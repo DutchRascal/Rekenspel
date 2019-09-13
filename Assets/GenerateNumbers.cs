@@ -11,6 +11,9 @@ public class GenerateNumbers : MonoBehaviour
     [SerializeField] float waitTime = 2;
     [SerializeField] Text correctScoreText;
     [SerializeField] Text wrongScoreText;
+    [SerializeField] int maxNumber = 10;
+    [SerializeField] Image thumbUp;
+    [SerializeField] Image thumbDown;
 
     InputField input;
     string answer;
@@ -20,22 +23,25 @@ public class GenerateNumbers : MonoBehaviour
     private void Awake()
     {
         input = GameObject.Find("InputField").GetComponent<InputField>();
-        correctScoreText.text = "0";
-        wrongScoreText.text = "0";
+        input.ActivateInputField();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        GenerateNewNumbers(); sign.text = "+";
+        correctScoreText.text = "0";
+        wrongScoreText.text = "0";
+        thumbUp.enabled = false;
+        thumbDown.enabled = false;
+        GenerateNewNumbers();
+        sign.text = "+";
     }
 
     public void GenerateNewNumbers()
     {
         input.text = "";
         input.image.color = Color.white;
-        number1.text = UnityEngine.Random.Range(1, 20).ToString();
-        number2.text = UnityEngine.Random.Range(1, 20).ToString();
+        number1.text = UnityEngine.Random.Range(1, maxNumber).ToString();
+        number2.text = UnityEngine.Random.Range(1, maxNumber).ToString();
     }
 
     public void GetInput(string answer)
@@ -58,6 +64,7 @@ public class GenerateNumbers : MonoBehaviour
     {
         int num1 = Convert.ToInt32(number1.text);
         int num2 = Convert.ToInt32(number2.text);
+
         if (num1 + num2 == number)
         {
             input.image.color = Color.green;
@@ -74,8 +81,23 @@ public class GenerateNumbers : MonoBehaviour
     {
         correctScore += correct;
         wrongScore += wrong;
-        correctScoreText.text = correctScore.ToString();
-        wrongScoreText.text = wrongScore.ToString();
+        correctScoreText.text = correctScore.ToString("0");
+        wrongScoreText.text = wrongScore.ToString("0");
+        UpdateThumb();
+    }
+
+    private void UpdateThumb()
+    {
+        if (correctScore > wrongScore)
+        {
+            thumbUp.enabled = true;
+            thumbDown.enabled = false;
+        }
+        else
+        {
+            thumbDown.enabled = true;
+            thumbUp.enabled = false;
+        }
     }
 
     private IEnumerator WaitRoutine()
@@ -84,3 +106,5 @@ public class GenerateNumbers : MonoBehaviour
         GenerateNewNumbers();
     }
 }
+
+
