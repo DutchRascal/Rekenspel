@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Main Screen.unity
+    path: Assets/Scenes/Plus.unity
     guid: fab61281f29904fd39f8c3c36871fbb0
   m_configObjects: {}

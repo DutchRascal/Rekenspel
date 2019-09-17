@@ -11,7 +11,8 @@ public class GenerateNumbers : MonoBehaviour
     [SerializeField] float waitTime = 2;
     [SerializeField] Text correctScoreText;
     [SerializeField] Text wrongScoreText;
-    [SerializeField] int maxNumber = 10;
+    [SerializeField] int maxNumber1 = 20;
+    [SerializeField] int maxNumber2 = 10;
     [SerializeField] Image thumbUp;
     [SerializeField] Image thumbDown;
 
@@ -24,7 +25,6 @@ public class GenerateNumbers : MonoBehaviour
     private void Awake()
     {
         input = GameObject.Find("InputField").GetComponent<InputField>();
-        input.ActivateInputField();
     }
 
     void Start()
@@ -35,6 +35,7 @@ public class GenerateNumbers : MonoBehaviour
         thumbDown.enabled = false;
         GenerateNewNumbers();
         sign.text = "+";
+        input.ActivateInputField();
     }
 
     private void Update()
@@ -60,8 +61,8 @@ public class GenerateNumbers : MonoBehaviour
     {
         input.text = "";
         input.image.color = Color.white;
-        number1.text = UnityEngine.Random.Range(1, maxNumber).ToString();
-        number2.text = UnityEngine.Random.Range(1, maxNumber).ToString();
+        number1.text = UnityEngine.Random.Range(1, maxNumber1).ToString();
+        number2.text = UnityEngine.Random.Range(1, maxNumber2).ToString();
     }
 
     public void GetInput(string answer)
