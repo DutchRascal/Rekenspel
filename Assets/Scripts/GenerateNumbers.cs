@@ -85,8 +85,9 @@ public class GenerateNumbers : MonoBehaviour
     {
         int num1 = Convert.ToInt32(number1.text);
         int num2 = Convert.ToInt32(number2.text);
+        int answer = num1 + num2;
 
-        if (num1 + num2 == number)
+        if (answer == number)
         {
             input.image.color = Color.green;
             UpdateScore(0, 1);
@@ -94,6 +95,7 @@ public class GenerateNumbers : MonoBehaviour
         else
         {
             input.image.color = Color.red;
+            input.text = answer.ToString();
             UpdateScore(1, 0);
         }
     }
