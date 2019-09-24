@@ -19,6 +19,9 @@ public class Menu : MonoBehaviour
             case 3:
                 SceneManager.LoadScene("Divide");
                 break;
+            case 4:
+                SceneManager.LoadScene("Settings");
+                break;
         }
     }
 }
