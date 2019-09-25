@@ -21,14 +21,17 @@ public class GenerateNumbers : MonoBehaviour
     int wrongScore, correctScore;
     float desiredNumber, initialNumber, currentNumber;
     float animationTime = 1.5f;
+    Player player;
 
     private void Awake()
     {
         input = GameObject.Find("InputField").GetComponent<InputField>();
+        player = FindObjectOfType<Player>();
     }
 
     void Start()
     {
+        player.LoadPlayer();
         correctScoreText.text = "0";
         wrongScoreText.text = "0";
         thumbUp.enabled = false;
@@ -61,8 +64,8 @@ public class GenerateNumbers : MonoBehaviour
     {
         input.text = "";
         input.image.color = Color.white;
-        number1.text = UnityEngine.Random.Range(1, maxNumber1).ToString();
-        number2.text = UnityEngine.Random.Range(1, maxNumber2).ToString();
+        number1.text = UnityEngine.Random.Range(1, int.Parse(player.maxNumber1)).ToString();
+        number2.text = UnityEngine.Random.Range(1, int.Parse(player.maxNumber2)).ToString();
     }
 
     public void GetInput(string answer)
