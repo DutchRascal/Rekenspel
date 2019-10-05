@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GenerateNumbers : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GenerateNumbers : MonoBehaviour
     float desiredNumber, initialNumber, currentNumber;
     float animationTime = 1.5f;
     Player player;
+    string currentScene;
 
     private void Awake()
     {
@@ -37,8 +39,16 @@ public class GenerateNumbers : MonoBehaviour
         thumbUp.enabled = false;
         thumbDown.enabled = false;
         GenerateNewNumbers();
-        sign.text = "+";
         input.ActivateInputField();
+        currentScene = SceneManager.GetActiveScene().name;
+        if (currentScene == "Add")
+        {
+            sign.text = "+";
+        }
+        else if (currentScene == "Substract")
+        {
+            sign.text = "-";
+        }
     }
 
     private void Update()
@@ -64,8 +74,23 @@ public class GenerateNumbers : MonoBehaviour
     {
         input.text = "";
         input.image.color = Color.white;
-        number1.text = UnityEngine.Random.Range(1, int.Parse(player.maxNumber1)).ToString();
-        number2.text = UnityEngine.Random.Range(1, int.Parse(player.maxNumber2)).ToString();
+        int num1Int = Mathf.FloorToInt(UnityEngine.Random.Range(1, int.Parse(player.maxNumber1)));
+        int num2Int = Mathf.FloorToInt(UnityEngine.Random.Range(1, int.Parse(player.maxNumber2)));
+        print(num1Int + " / " + num2Int);
+        if (currentScene == "Substract")
+        {
+            print(num1Int + " / " + num2Int);
+            if (num1Int < num2Int)
+            {
+                print("Swapped");
+                int tmpInt = num1Int;
+                num1Int = num2Int;
+                num2Int = tmpInt;
+            }
+        }
+        number1.text = num1Int.ToString();
+        number2.text = num2Int.ToString();
+
     }
 
     public void GetInput(string answer)
@@ -88,13 +113,25 @@ public class GenerateNumbers : MonoBehaviour
     {
         int num1 = Convert.ToInt32(number1.text);
         int num2 = Convert.ToInt32(number2.text);
-        int answer = num1 + num2;
-
-        if (answer == number)
+        if (currentScene == "Add")
         {
-            input.image.color = Color.green;
-            UpdateScore(0, 1);
+            int answer = num1 + num2;
+            if (answer == number)
+            {
+                input.image.color = Color.green;
+                UpdateScore(0, 1);
+            }
         }
+        else if (currentScene == "Substract")
+        {
+            int answer = num1 - num2;
+            if (answer == number)
+            {
+                input.image.color = Color.green;
+                UpdateScore(0, 1);
+            }
+        }
+
         else
         {
             input.image.color = Color.red;
@@ -130,18 +167,6 @@ public class GenerateNumbers : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         GenerateNewNumbers();
-    }
-
-    void SetNumber(float value)
-    {
-        initialNumber = currentNumber;
-        desiredNumber = value;
-    }
-
-    void AddToNumber(float value)
-    {
-        initialNumber = currentNumber;
-        desiredNumber += value;
     }
 }
 
