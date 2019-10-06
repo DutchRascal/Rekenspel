@@ -17,7 +17,7 @@ public class Menu : MonoBehaviour
                 SceneManager.LoadScene("Substract");
                 break;
             case 3:
-                SceneManager.LoadScene("Divide");
+                SceneManager.LoadScene("Multiply");
                 break;
             case 4:
                 SceneManager.LoadScene("Settings");

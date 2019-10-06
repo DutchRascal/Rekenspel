@@ -115,6 +115,13 @@ public class Settings : MonoBehaviour
                 if (!int.TryParse(tafels[i], out intTafel)) { correct[2] = '1'; break; }
             }
         }
+        if (int.TryParse(tafels[0], out intTafel))
+        {
+            if (intTafel == 0)
+            {
+                correct[2] = '1';
+            }
+        }
         return correct;
     }
 

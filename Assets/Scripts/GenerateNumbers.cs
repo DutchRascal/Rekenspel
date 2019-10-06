@@ -38,8 +38,6 @@ public class GenerateNumbers : MonoBehaviour
         wrongScoreText.text = "0";
         thumbUp.enabled = false;
         thumbDown.enabled = false;
-        GenerateNewNumbers();
-        input.ActivateInputField();
         currentScene = SceneManager.GetActiveScene().name;
         if (currentScene == "Add")
         {
@@ -49,6 +47,12 @@ public class GenerateNumbers : MonoBehaviour
         {
             sign.text = "-";
         }
+        else if (currentScene == "Multiply")
+        {
+            sign.text = "x";
+        }
+        GenerateNewNumbers();
+        input.ActivateInputField();
     }
 
     private void Update()
@@ -74,23 +78,47 @@ public class GenerateNumbers : MonoBehaviour
     {
         input.text = "";
         input.image.color = Color.white;
-        int num1Int = Mathf.FloorToInt(UnityEngine.Random.Range(1, int.Parse(player.maxNumber1)));
-        int num2Int = Mathf.FloorToInt(UnityEngine.Random.Range(1, int.Parse(player.maxNumber2)));
-        print(num1Int + " / " + num2Int);
-        if (currentScene == "Substract")
+        if (currentScene == "Multiply")
         {
-            print(num1Int + " / " + num2Int);
-            if (num1Int < num2Int)
-            {
-                print("Swapped");
-                int tmpInt = num1Int;
-                num1Int = num2Int;
-                num2Int = tmpInt;
-            }
-        }
-        number1.text = num1Int.ToString();
-        number2.text = num2Int.ToString();
+            var textSplit = player.tafel.Split(","[0]);
 
+            // var textSplit=player.tafel.Split(",");
+            int num1Int = Mathf.FloorToInt(UnityEngine.Random.Range(2, 10));
+            int num2Int = Mathf.FloorToInt(UnityEngine.Random.Range(2, player.tafelMax + 1));
+            bool isInTafelArray = false;
+            while (!isInTafelArray)
+            {
+                num2Int = Mathf.FloorToInt(UnityEngine.Random.Range(2, player.tafelMax + 1));
+                foreach (string entry in textSplit)
+                {
+                    int val;
+                    bool tmp = int.TryParse(entry, out val);
+                    if (num2Int == val)
+                    {
+                        isInTafelArray = true;
+                        print(num2Int);
+                    }
+                }
+            }
+            number1.text = num1Int.ToString();
+            number2.text = num2Int.ToString();
+        }
+        else
+        {
+            int num1Int = Mathf.FloorToInt(UnityEngine.Random.Range(1, int.Parse(player.maxNumber1)));
+            int num2Int = Mathf.FloorToInt(UnityEngine.Random.Range(1, int.Parse(player.maxNumber2)));
+            if (currentScene == "Substract")
+            {
+                if (num1Int < num2Int)
+                {
+                    int tmpInt = num1Int;
+                    num1Int = num2Int;
+                    num2Int = tmpInt;
+                }
+            }
+            number1.text = num1Int.ToString();
+            number2.text = num2Int.ToString();
+        }
     }
 
     public void GetInput(string answer)
@@ -121,8 +149,15 @@ public class GenerateNumbers : MonoBehaviour
                 input.image.color = Color.green;
                 UpdateScore(0, 1);
             }
+            else
+            {
+                input.image.color = Color.red;
+                input.text = answer.ToString();
+                UpdateScore(1, 0);
+            }
         }
-        else if (currentScene == "Substract")
+
+        if (currentScene == "Substract")
         {
             int answer = num1 - num2;
             if (answer == number)
@@ -130,14 +165,30 @@ public class GenerateNumbers : MonoBehaviour
                 input.image.color = Color.green;
                 UpdateScore(0, 1);
             }
+            else
+            {
+                input.image.color = Color.red;
+                input.text = answer.ToString();
+                UpdateScore(1, 0);
+            }
         }
 
-        else
+        if (currentScene == "Multiply")
         {
-            input.image.color = Color.red;
-            input.text = answer.ToString();
-            UpdateScore(1, 0);
+            int answer = num1 * num2;
+            if (answer == number)
+            {
+                input.image.color = Color.green;
+                UpdateScore(0, 1);
+            }
+            else
+            {
+                input.image.color = Color.red;
+                input.text = answer.ToString();
+                UpdateScore(1, 0);
+            }
         }
+
     }
 
     private void UpdateScore(int wrong, int correct)
@@ -167,6 +218,11 @@ public class GenerateNumbers : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         GenerateNewNumbers();
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 }
 
