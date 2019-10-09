@@ -112,14 +112,9 @@ public class Settings : MonoBehaviour
         {
             for (int i = 0; i < tafels.Length; i++)
             {
-                if (!int.TryParse(tafels[i], out intTafel)) { correct[2] = '1'; break; }
-            }
-        }
-        if (int.TryParse(tafels[0], out intTafel))
-        {
-            if (intTafel == 0)
-            {
-                correct[2] = '1';
+                bool isInt = int.TryParse(tafels[i], out intTafel);
+                if (!isInt) { correct[2] = '1'; break; }
+                if (intTafel == 0) { correct[2] = '1'; break; }
             }
         }
         return correct;
